@@ -8,6 +8,23 @@ Its pretty straight forward, in System.Management.Automation, the hostname is ha
 
 This requires local admin access on the remote host.
 
+## Description of Modifications
+
+The modified files are:
+
+```
+src\System.Management.Automation\engine\remoting\common\RemoteSessionNamedPipe.cs
+src\System.Management.Automation\engine\remoting\common\RunspaceConnectionInfo.cs
+src\System.Management.Automation\engine\remoting\fanin\OutOfProcTransportManager.cs
+src\System.Management.Automation\System.Management.Automation.csproj
+```
+
+The new project added (PsPipeJack):
+```
+src\PsPipeJack
+```
+
+
 ## Build Instruction
 
 ```
@@ -31,5 +48,13 @@ dotnet publish .\src\PsPipeJack\PsPipeJack.csproj -c Release -r win-x64 --self-c
 ## Usage
 
 ```
+Usage: PsPipeJack <serverName> <pipeName>
+
+Arguments:
+  serverName   IP address or hostname of the remote machine
+  pipeName     Name of the PowerShell named pipe on the remote machine
+
+Example:
+  PsPipeJack 192.168.1.100 PSHost.134214327377452265.6880.DefaultAppDomain.powershell
 
 ```
