@@ -429,11 +429,14 @@ namespace System.Management.Automation.Remoting
             string coreName,
             CommonSecurityDescriptor securityDesc)
         {
-            if (serverName == null) { throw new PSArgumentNullException(nameof(serverName)); }
+            if (serverName == null)
+            { throw new PSArgumentNullException(nameof(serverName)); }
 
-            if (namespaceName == null) { throw new PSArgumentNullException(nameof(namespaceName)); }
+            if (namespaceName == null)
+            { throw new PSArgumentNullException(nameof(namespaceName)); }
 
-            if (coreName == null) { throw new PSArgumentNullException(nameof(coreName)); }
+            if (coreName == null)
+            { throw new PSArgumentNullException(nameof(coreName)); }
 
 #if !UNIX
             string fullPipeName = @"\\" + serverName + @"\" + namespaceName + @"\" + coreName;
@@ -520,14 +523,16 @@ namespace System.Management.Automation.Remoting
         {
             lock (_syncObject)
             {
-                if (IsDisposed) { return; }
+                if (IsDisposed)
+                { return; }
 
                 IsDisposed = true;
             }
 
             if (TextReader != null)
             {
-                try { TextReader.Dispose(); }
+                try
+                { TextReader.Dispose(); }
                 catch (ObjectDisposedException) { }
 
                 TextReader = null;
@@ -535,7 +540,8 @@ namespace System.Management.Automation.Remoting
 
             if (TextWriter != null)
             {
-                try { TextWriter.Dispose(); }
+                try
+                { TextWriter.Dispose(); }
                 catch (ObjectDisposedException) { }
 
                 TextWriter = null;
@@ -543,7 +549,8 @@ namespace System.Management.Automation.Remoting
 
             if (Stream != null)
             {
-                try { Stream.Dispose(); }
+                try
+                { Stream.Dispose(); }
                 catch (ObjectDisposedException) { }
             }
         }
@@ -871,7 +878,8 @@ namespace System.Management.Automation.Remoting
         {
             lock (s_syncObject)
             {
-                if (!IPCNamedPipeServerEnabled) { return; }
+                if (!IPCNamedPipeServerEnabled)
+                { return; }
 
                 if (IPCNamedPipeServer == null || IPCNamedPipeServer.IsDisposed)
                 {
@@ -1009,7 +1017,8 @@ namespace System.Management.Automation.Remoting
 
             if (TextReader != null)
             {
-                try { TextReader.Dispose(); }
+                try
+                { TextReader.Dispose(); }
                 catch (ObjectDisposedException) { }
 
                 TextReader = null;
@@ -1017,7 +1026,8 @@ namespace System.Management.Automation.Remoting
 
             if (TextWriter != null)
             {
-                try { TextWriter.Dispose(); }
+                try
+                { TextWriter.Dispose(); }
                 catch (ObjectDisposedException) { }
 
                 TextWriter = null;
@@ -1025,7 +1035,8 @@ namespace System.Management.Automation.Remoting
 
             if (_clientPipeStream != null)
             {
-                try { _clientPipeStream.Dispose(); }
+                try
+                { _clientPipeStream.Dispose(); }
                 catch (ObjectDisposedException) { }
             }
         }
@@ -1087,6 +1098,12 @@ namespace System.Management.Automation.Remoting
 
         private volatile bool _connecting;
 
+        /// <summary>
+        /// The server name to connect to. "." means local machine.
+        /// For remote connections this is the hostname or IP of the target.
+        /// </summary>
+        private readonly string _serverName;
+
         #endregion
 
         #region Constructors
@@ -1113,11 +1130,22 @@ namespace System.Management.Automation.Remoting
         { }
 
         /// <summary>
-        /// Constructor. Creates Named Pipe based on name argument.
+        /// Constructor. Creates Named Pipe based on name argument. Connects to local machine.
         /// </summary>
         /// <param name="pipeName">Named Pipe name.</param>
         internal RemoteSessionNamedPipeClient(
            string pipeName)
+            : this(pipeName, ".")
+        { }
+
+        /// <summary>
+        /// Constructor. Creates Named Pipe based on name argument and target server.
+        /// </summary>
+        /// <param name="pipeName">Named Pipe name.</param>
+        /// <param name="serverName">Server name to connect to. Use "." for local machine.</param>
+        internal RemoteSessionNamedPipeClient(
+           string pipeName,
+           string serverName)
         {
             if (pipeName == null)
             {
@@ -1125,6 +1153,7 @@ namespace System.Management.Automation.Remoting
             }
 
             PipeName = pipeName;
+            _serverName = string.IsNullOrEmpty(serverName) ? "." : serverName;
 
             // Defer creating the .Net NamedPipeClientStream object until we connect.
             // _clientPipeStream == null.
@@ -1141,11 +1170,14 @@ namespace System.Management.Automation.Remoting
             string namespaceName,
             string coreName)
         {
-            if (serverName == null) { throw new PSArgumentNullException(nameof(serverName)); }
+            if (serverName == null)
+            { throw new PSArgumentNullException(nameof(serverName)); }
 
-            if (namespaceName == null) { throw new PSArgumentNullException(nameof(namespaceName)); }
+            if (namespaceName == null)
+            { throw new PSArgumentNullException(nameof(namespaceName)); }
 
-            if (coreName == null) { throw new PSArgumentNullException(nameof(coreName)); }
+            if (coreName == null)
+            { throw new PSArgumentNullException(nameof(coreName)); }
 
             PipeName = @"\\" + serverName + @"\" + namespaceName + @"\" + coreName;
 
@@ -1180,7 +1212,7 @@ namespace System.Management.Automation.Remoting
             _connecting = true;
 
             NamedPipeClientStream namedPipeClientStream = new NamedPipeClientStream(
-                serverName: ".",
+                serverName: _serverName,
                 pipeName: PipeName,
                 direction: PipeDirection.InOut,
                 options: PipeOptions.Asynchronous);

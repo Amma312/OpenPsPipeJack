@@ -1708,6 +1708,7 @@ namespace System.Management.Automation.Runspaces
         private PSCredential _credential;
         private AuthenticationMechanism _authMechanism;
         private string _appDomainName = string.Empty;
+        private string _serverName = "localhost";
 
         private const int _defaultOpenTimeout = 60000;      /* 60 seconds. */
 
@@ -1748,6 +1749,17 @@ namespace System.Management.Automation.Runspaces
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the remote server hosting the named pipe.
+        /// Defaults to "localhost". Set to a remote hostname or IP to connect
+        /// to a named pipe on another machine over SMB (\\server\pipe\...).
+        /// </summary>
+        public string ServerName
+        {
+            get { return _serverName; }
+            set { _serverName = string.IsNullOrEmpty(value) ? "localhost" : value; }
         }
 
         #endregion
@@ -1826,13 +1838,15 @@ namespace System.Management.Automation.Runspaces
         #region Overrides
 
         /// <summary>
-        /// Computer is always localhost.
+        /// The computer name. Returns ServerName (defaults to "localhost").
+        /// Prefer setting ServerName directly; this setter is provided for
+        /// compatibility with the base class contract.
         /// </summary>
         public override string ComputerName
         {
-            get { return "localhost"; }
+            get { return _serverName; }
 
-            set { throw new NotImplementedException(); }
+            set { _serverName = string.IsNullOrEmpty(value) ? "localhost" : value; }
         }
 
         /// <summary>
@@ -1897,6 +1911,7 @@ namespace System.Management.Automation.Runspaces
             newCopy._appDomainName = _appDomainName;
             newCopy.OpenTimeout = this.OpenTimeout;
             newCopy.CustomPipeName = this.CustomPipeName;
+            newCopy._serverName = this._serverName;
 
             return newCopy;
         }
@@ -2106,7 +2121,7 @@ namespace System.Management.Automation.Runspaces
             int connectingTimeout,
             Hashtable options) : this(userName, computerName, keyFilePath, port, subsystem, connectingTimeout)
         {
-           Options = options;
+            Options = options;
         }
 
         #endregion
@@ -2245,7 +2260,7 @@ namespace System.Management.Automation.Runspaces
                     }
                 }
             }
-            
+
             if (string.IsNullOrEmpty(filePath))
             {
                 throw new CommandNotFoundException(
@@ -2691,11 +2706,20 @@ namespace System.Management.Automation.Runspaces
             }
             catch (Exception)
             {
-                if (stdInWriterVar != null) { stdInWriterVar.Dispose(); } else { stdInPipeServer.Dispose(); }
+                if (stdInWriterVar != null)
+                { stdInWriterVar.Dispose(); }
+                else
+                { stdInPipeServer.Dispose(); }
 
-                if (stdOutReaderVar != null) { stdOutReaderVar.Dispose(); } else { stdOutPipeServer.Dispose(); }
+                if (stdOutReaderVar != null)
+                { stdOutReaderVar.Dispose(); }
+                else
+                { stdOutPipeServer.Dispose(); }
 
-                if (stdErrReaderVar != null) { stdErrReaderVar.Dispose(); } else { stdErrPipeServer.Dispose(); }
+                if (stdErrReaderVar != null)
+                { stdErrReaderVar.Dispose(); }
+                else
+                { stdErrPipeServer.Dispose(); }
 
                 throw;
             }

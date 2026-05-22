@@ -1318,7 +1318,8 @@ namespace System.Management.Automation.Remoting.Client
                     // use the ID and try to get a new handle...
                     Process newHandle = Process.GetProcessById(_serverProcess.Id);
                     // If the process was not found, we won't get here...
-                    if (_processCreated) newHandle.Kill();
+                    if (_processCreated)
+                        newHandle.Kill();
                 }
                 catch (Exception)
                 {
@@ -1669,7 +1670,8 @@ namespace System.Management.Automation.Remoting.Client
             PSRemotingCryptoHelper cryptoHelper)
             : base(runspaceId, cryptoHelper)
         {
-            if (connectionInfo == null) { throw new PSArgumentException("connectionInfo"); }
+            if (connectionInfo == null)
+            { throw new PSArgumentException("connectionInfo"); }
 
             _connectionInfo = connectionInfo;
         }
@@ -1916,7 +1918,8 @@ namespace System.Management.Automation.Remoting.Client
                     else
                     {
                         // The first received PSRP message from the server indicates that the connection is established and that PSRP is running.
-                        if (!_connectionEstablished) { _connectionEstablished = true; }
+                        if (!_connectionEstablished)
+                        { _connectionEstablished = true; }
 
                         // Normal output data.
                         HandleOutputDataReceived(data);
@@ -2093,9 +2096,16 @@ namespace System.Management.Automation.Remoting.Client
         /// </summary>
         public override void CreateAsync()
         {
+            // Resolve the target server name. "." means local machine; anything else
+            // is a remote host and the pipe will be connected over SMB (\\server\pipe\...).
+            string serverName = string.IsNullOrEmpty(_connectionInfo.ServerName) ||
+                                _connectionInfo.ServerName.Equals("localhost", StringComparison.OrdinalIgnoreCase)
+                ? "."
+                : _connectionInfo.ServerName;
+
             _clientPipe = string.IsNullOrEmpty(_connectionInfo.CustomPipeName) ?
                 new RemoteSessionNamedPipeClient(_connectionInfo.ProcessId, _connectionInfo.AppDomainName) :
-                new RemoteSessionNamedPipeClient(_connectionInfo.CustomPipeName);
+                new RemoteSessionNamedPipeClient(_connectionInfo.CustomPipeName, serverName);
 
             // Wait for named pipe to connect.
             _clientPipe.Connect(_connectionInfo.OpenTimeout);
