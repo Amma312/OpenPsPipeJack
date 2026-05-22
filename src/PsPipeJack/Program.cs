@@ -17,8 +17,6 @@ class Program
             Console.WriteLine("Example:");
             Console.WriteLine("  PsPipeJack 192.168.1.100 PSHost.134214327377452265.6880.DefaultAppDomain.powershell");
             Console.WriteLine();
-            Console.WriteLine("Tip: To list available pipes on a remote machine, run:");
-            Console.WriteLine("  [System.IO.Directory]::GetFiles(\"\\\\\\\\<serverName>\\\\pipe\\\\\") | Where-Object { $_ -like \"*PSHost*\" }");
             return;
         }
 
