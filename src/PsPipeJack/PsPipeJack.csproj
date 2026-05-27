@@ -4,11 +4,7 @@
     <TargetFramework>net11.0</TargetFramework>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>$(NoWarn);IL3000</NoWarn>
-    <DebugType>none</DebugType>
-    <DebugSymbols>false</DebugSymbols>
-    <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>full</TrimMode>
+    <NoWarn>$(NoWarn);IL3000;IDE0019;IDE0031</NoWarn>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SMBLibrary" Version="1.*" />
