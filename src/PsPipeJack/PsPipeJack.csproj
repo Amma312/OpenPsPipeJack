@@ -5,9 +5,13 @@
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <NoWarn>$(NoWarn);IL3000</NoWarn>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>full</TrimMode>
   </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="SMBLibrary" Version="1.*" />
     <ProjectReference Include="..\System.Management.Automation\System.Management.Automation.csproj" />
   </ItemGroup>
 </Project>
