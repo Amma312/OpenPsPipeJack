@@ -91,3 +91,24 @@ Examples:
   PsPipeJack --connect   192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell CORP\jdoe Passw0rd!
 
 ```
+
+## Examples
+
+### Enumerate Remote Pipes
+
+```
+PsPipeJack.exe --enumerate 192.168.1.100  lab.local\administrator 'password'
+[*] Enumerating pipes on \\192.168.1.100 as lab.local\administrator ...
+
+[+] Authenticated successfully
+[+] Connected to \\192.168.1.100\IPC$
+
+Pipes Found:
+PSHost.134214327377452265.6880.DefaultAppDomain.powershell
+PSHost.134214327970160016.3492.DefaultAppDomain.powershell
+```
+
+### Connect to Remote Pipe (Credentials)
+
+```
+```
