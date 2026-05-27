@@ -48,13 +48,46 @@ dotnet publish .\src\PsPipeJack\PsPipeJack.csproj -c Release -r win-x64 --self-c
 ## Usage
 
 ```
-Usage: PsPipeJack <serverName> <pipeName>
+Usage: PsPipeJack.exe <command> [arguments]
 
-Arguments:
-  serverName   IP address or hostname of the remote machine
-  pipeName     Name of the PowerShell named pipe on the remote machine
+Commands:
+  --enumerate   (-e)   List all PowerShell named pipes on a remote machine
+  --connect     (-c)   Connect to a PowerShell named pipe on a remote machine
 
-Example:
-  PsPipeJack 192.168.1.100 PSHost.134214327377452265.6880.DefaultAppDomain.powershell
+──────────────────────────────────────────────────────────────
+  --enumerate <server> <domain\user> <password>
+
+  Arguments:
+    <server>          [required]  IP address or hostname of the remote machine
+    <domain\user>     [required]  Credentials to authenticate with (e.g. CORP\jdoe)
+    <password>        [required]  Password for the specified user
+
+  Notes:
+    Enumerate always requires explicit credentials. It authenticates
+    directly to the remote machine over SMB/IPC$ and will not fall
+    back to the current user's access token.
+
+──────────────────────────────────────────────────────────────
+  --connect <server> <pipe> [domain\user] [password]
+
+  Arguments:
+    <server>          [required]  IP address or hostname of the remote machine
+    <pipe>            [required]  Full name of the named pipe to connect to
+    <domain\user>     [optional]  Credentials to authenticate with (e.g. CORP\jdoe)
+    <password>        [optional]  Password for the specified user
+
+  Notes:
+    Connect supports two authentication modes:
+      Current token:   Omit domain\user and password. The current user's
+                       Windows access token is used automatically via SSPI.
+      Credentials:     Supply domain\user and password. An authenticated
+                       IPC$ session is established first, then the pipe
+                       connection rides that session.
+
+──────────────────────────────────────────────────────────────
+Examples:
+  PsPipeJack --enumerate 192.168.1.100 CORP\jdoe Passw0rd!
+  PsPipeJack --connect   192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell
+  PsPipeJack --connect   192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell CORP\jdoe Passw0rd!
 
 ```
